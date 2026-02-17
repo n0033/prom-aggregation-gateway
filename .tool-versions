@@ -1,4 +1,3 @@
-earthly 0.8.5
 github-cli 2.36.0
 golang 1.21.3
 helm-cr 1.4.1
