@@ -31,7 +31,11 @@ jobs:
           platforms: linux/amd64,linux/arm64
           # Not pushing - this is just to test the build
           push: false
-          tags: ghcr.io/${{ github.repository }}:latest,ghcr.io/${{ github.repository }}:${{ env.RELEASE_VERSION }}
+          tags: ghcr.io/${{ github.repository }}:${{ github.sha }}
+          build-args: |
+            VERSION=GH_MR
+            COMMIT_SHA=${{ github.sha }}
+
 
 
   build-binaries:
