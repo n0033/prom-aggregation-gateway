@@ -58,7 +58,10 @@ jobs:
 
       - name: Build and push
         uses: docker/build-push-action@v6
-        wioth:
+        with:
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}:latest,ghcr.io/${{ github.repository_owner }}:${{ env.RELEASE_VERSION }}
+          tags: ghcr.io/${{ github.repository }}:latest,ghcr.io/${{ github.repository }}:${{ env.RELEASE_VERSION }}
+          build-args: |
+            VERSION=GH_MR
+            COMMIT_SHA=${{ github.sha }}

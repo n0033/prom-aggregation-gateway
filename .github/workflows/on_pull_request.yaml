@@ -27,11 +27,15 @@ jobs:
 
       - name: Build and push
         uses: docker/build-push-action@v6
-        wioth:
+        with:
           platforms: linux/amd64,linux/arm64
           # Not pushing - this is just to test the build
           push: false
-          tags: ghcr.io/${{ github.repository_owner }}:latest,ghcr.io/${{ github.repository_owner }}:${{ env.RELEASE_VERSION }}
+          tags: ghcr.io/${{ github.repository }}:${{ github.sha }}
+          build-args: |
+            VERSION=GH_MR
+            COMMIT_SHA=${{ github.sha }}
+
 
 
   build-binaries:
@@ -48,22 +52,3 @@ jobs:
       # intentionally not pushing, this is just
       # to test the command
       - run: make build-binaries
-
-  skaffold:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - uses: wistia/parse-tool-versions@v1.0
-
-      - name: start minikube
-        uses: hiberbee/github-action-minikube@1.7.0
-
-      - name: setup helm
-        uses: hiberbee/github-action-helm@1.13.0
-
-      - name: run skaffold
-        uses: hiberbee/github-action-skaffold@1.24.0
-        with:
-          skaffold-version: "${{ env.SKAFFOLD_TOOL_VERSION }}"
-          command: run
